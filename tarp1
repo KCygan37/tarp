@@ -1,0 +1,49 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+# Define the number of sides and the radius of the base
+n_sides = 8
+radius = 1.0
+
+# Calculate the vertices of the base polygon
+theta = np.linspace(0, 2 * np.pi, n_sides + 1)
+x = radius * np.cos(theta)
+y = radius * np.sin(theta)
+z = np.zeros(n_sides + 1)
+
+# Create the base polygon
+base_polygon = np.column_stack((x, y, z))
+
+# Define the height of the pyramid
+height = 2.0
+
+# Calculate the apex of the pyramid
+apex = np.array([0, 0, height])
+
+# Create the 3D model
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+
+# Plot the base polygon
+ax.plot3D(base_polygon[:, 0], base_polygon[:, 1], base_polygon[:, 2], 'b-')
+
+# Plot the sides of the pyramid
+for i in range(n_sides):
+    ax.plot3D([base_polygon[i, 0], base_polygon[(i + 1) % n_sides, 0]],
+              [base_polygon[i, 1], base_polygon[(i + 1) % n_sides, 1]],
+              [base_polygon[i, 2], apex[2]], 'b-')
+
+# Plot the cap on top
+ax.plot3D([apex[0], apex[0]], [apex[1], apex[1]], [apex[2], apex[2] + 0.1], 'r-')
+
+# Set the axis limits and labels
+ax.set_xlabel('X')
+ax.set_ylabel('Y')
+ax.set_zlabel('Z')
+ax.set_xlim(-2, 2)
+ax.set_ylim(-2, 2)
+ax.set_zlim(0, 3)
+
+# Show the plot
+plt.show()
